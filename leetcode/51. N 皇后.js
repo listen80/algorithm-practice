@@ -21,42 +21,46 @@ var solveNQueens = function (n) {
                 return false;
             }
         }
-        console.log('iiiii')
-        for (let i = 0, j = col - row; i < n, j < n; i++, j++) {
-            console.log(i, j)
-            if (board[i][j] === 'Q') {
-                return false;
-            }
-        }
-        for (let i = 0, j = col + row; i < n, j > 0; i++, j--) {
-            if (board[i][j] === 'Q') {
-                return false;
-            }
-        }
+        // for (let i = 0, j = col - row; i < n && j < n; i++, j++) {
+        //     if (board[i][j] === 'Q') {
+        //         return false;
+        //     }
+        // }
+        // for (let i = 0, j = col + row; i < n && j >= 0; i++, j--) {
+        //     if (board[i][j] === 'Q') {
+        //         return false;
+        //     }
+        // }
         return true
     }
+    function log(board) {
+        const cloned = board.map((item) => item.slice());
+        console.log(cloned)
+        return cloned
+    }
+
+    const results = []
 
     function deep(board) {
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
                 if (board[i][j] === '.') {
-                    for (let k = 0; k < board.length; k++) {
-                        if (isValid(board, i, k)) {
-                            board[i][k] = 'Q';
-                            const result = deep(board);
-                            if (result) {
-                                return result;
-                            }
-                            board[i][k] = '.';
-                        }
+                    if (isValid(board, i, j)) {
+                        board[i][j] = 'Q';
+                        deep(board);
+                        board[i][j] = '.';
+                    } else {
+                        console.log(i, j)
                     }
                 }
             }
         }
+        results.push(log(board))
+
     }
-    const resolve = deep(createBoard(8))
+    const resolve = deep(createBoard(n))
     console.log(resolve)
     return resolve
 };
 
-solveNQueens(4)
+solveNQueens(8)
