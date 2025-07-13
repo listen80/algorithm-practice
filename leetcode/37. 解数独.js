@@ -121,6 +121,61 @@ function log(board) {
     return cloned
 }
 
-deep(0, 0, board)
+// deep(0, 0, board)
 
-console.log(results.length, board, equals(results[0], result))
+// console.log(results.length, board, equals(results[0], result))
+
+const map = {}
+
+function resolve(board) {
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            map['j' + j] = map['j' + j] || {}
+            map['i' + i] = map['i' + i] || {}
+            const y = Math.floor(j / 3)
+            const x = Math.floor(i / 3)
+            map['b' + x + y] = map['b' + x + y] || {}
+
+            if (board[i][j] !== '.') {
+                map['j' + j][board[i][j]] = true
+                map['i' + i][board[i][j]] = true
+                map['b' + x + y][board[i][j]] = true
+            } else {
+                // map['j' + j][board[i][j]] = !true
+                // map['i' + i][board[i][j]] = !true
+                // map['b' + x + y][board[i][j]] = !true
+            }
+        }
+    }
+    console.log(map)
+
+    function deep(a, b) {
+        for (let i = a; i < board.length; i++) {
+            for (let j = b; j < board[i].length; j++) {
+                if (board[i][j] === '.') {
+                    const y = Math.floor(j / 3)
+                    const x = Math.floor(i / 3)
+
+                    for (let i = 1; i <= 9; i++) {
+                        const v = i + ''
+                        if (!map['j' + j][v] && !map['i' + i][v] && !map['b' + x + y][v]) {
+                            board[i][j] = v
+                            map['j' + j][board[i][j]] = true
+                            map['i' + i][board[i][j]] = true
+                            map['b' + x + y][board[i][j]] = true
+                            deep(i, j, board)
+                        }
+                    }
+                } else {
+
+                }
+            }
+        }
+    }
+    
+}
+
+
+
+resolve(board)
+
